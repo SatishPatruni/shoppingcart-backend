@@ -1,5 +1,6 @@
 import { ConnectionManager } from '../processes/ConnectionManager';
 import { UserRouter } from './userRouter';
+import { PaymentRouter } from './paymentRouter';
 
 export class AppRouter {
   connectionManager: ConnectionManager;
@@ -10,5 +11,6 @@ export class AppRouter {
 
   public initRoutes(): void {
     new UserRouter(this.app).initRoutes();
+    new PaymentRouter(this.app).initRoutes();
   }
 }

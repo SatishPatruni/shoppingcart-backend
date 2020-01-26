@@ -25,10 +25,6 @@ class App {
       .catch(err => {
         console.error('Unable to connect to the database:', err);
       });
-
-    connection.sync().then(() => {
-      console.log('Database synced with models');
-    });
   }
 
   private setPassport(): void {

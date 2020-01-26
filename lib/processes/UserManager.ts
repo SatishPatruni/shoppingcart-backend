@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { ConnectionManager } from './ConnectionManager';
-import { Md5 } from 'ts-md5/dist/md5';
 import { Config } from '../config';
-import { User } from 'api-models/api-models';
 import bcrypt = require('bcryptjs');
 import jwt = require('jsonwebtoken');
 
@@ -17,10 +15,12 @@ export class UserManager {
   }
 
   public login(req: Request, res: Response) {
-    var response = { token: '', user: {} };
+    let response = { token: '', user: {} };
+    let userName = req.body.user_name;
+    let password = req.body.password;
     this.user
       .findOne({
-        where: { user_name: req.body.userName }
+        where: { user_name: userName }
       })
       .then(user => {
         if (!user) {
@@ -29,17 +29,16 @@ export class UserManager {
           });
         } else {
           user = user.get({ plain: true });
-          console.log('passwordHash: ' + this.passwordHash(req.body.password));
-          if (this.comparePassword(req.body.password, user.password)) {
+          console.log('passwordHash: ' + this.passwordHash(password));
+          if (this.comparePassword(password, user.password)) {
             delete user.password;
             const token = jwt.sign(user, this.config.secret, {
               expiresIn: this.config.jwtExpiry
             });
 
-            response.token = 'JWT ' + token;
             response.user = user;
-
-            res.json(response);
+            res.cookie("auth-token", token, {httpOnly:true, secure:true});
+            res.json(response).status(200).send();
           } else {
             return res.status(401).send();
           }
@@ -48,8 +47,6 @@ export class UserManager {
   }
 
   public createUser(req: Request, res: Response) {
-    req.body.organization_id = req.params.orgId;
-
     req.body.password = this.passwordHash(req.body.password);
 
     this.user
@@ -62,11 +59,9 @@ export class UserManager {
       });
   }
 
-  public deleteUser(req: Request, res: Response) {
+  public getUserDetails(req: Request, res: Response) {
     this.user.findById(req.params.id).then(user => {
-      user.destroy().then(() => {
-        res.status(200).send();
-      });
+      res.status(200).send(user);
     });
   }
 

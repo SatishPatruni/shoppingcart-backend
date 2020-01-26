@@ -9,33 +9,24 @@ export class UserRouter {
   }
 
   public initRoutes() {
-    //   this.app
-    //     .route('/api/v1/users')
-    //     .post(
-    //       passport.authenticate('jwt', { session: false }),
-    //       (req: Request, res: Response) => {
-    //         this.userManager.createUser(req, res);
-    //       }
-    //     );
-    //   this.app.route('/api/v1/login').post((req: Request, res: Response) => {
-    //     this.userManager.login(req, res);
-    //   });
-    //   this.app
-    //     .route('/api/v1/users/:id')
-    //     .delete(
-    //       passport.authenticate('jwt', { session: false }),
-    //       (req: Request, res: Response) => {
-    //         this.userManager.deleteUser(req, res);
-    //       }
-    //     );
-    //   this.app
-    //     .route('/api/v1/orgs/:orgId/users')
-    //     .post(
-    //       passport.authenticate('jwt', { session: false }),
-    //       (req: Request, res: Response) => {
-    //         this.userManager.createUser(req, res);
-    //       }
-    //     );
-    //
+    this.app
+      .route('/api/v1/users')
+      .post(
+        (req: Request, res: Response) => {
+          this.userManager.createUser(req, res);
+        }
+      );
+
+    this.app.route('/api/v1/login').post((req: Request, res: Response) => {
+      this.userManager.login(req, res);
+    });
+
+    this.app
+      .route('/api/v1/users/:id')
+      .get(
+        (req: Request, res: Response) => {
+          this.userManager.getUserDetails(req, res);
+        }
+      );
   }
 }

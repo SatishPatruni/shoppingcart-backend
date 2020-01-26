@@ -2,34 +2,30 @@
 // tslint:disable
 import * as sequelize from 'sequelize';
 import {DataTypes} from 'sequelize';
-import {userInstance, userAttribute} from './db';
+import {productInstance, productAttribute} from './db';
 
 module.exports = function(sequelize: sequelize.Sequelize, DataTypes: DataTypes) {
-  return sequelize.define<userInstance, userAttribute>('user', {
-    user_id: {
+  return sequelize.define<productInstance, productAttribute>('product', {
+    id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    user_name: {
+    product_id: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    password: {
-      type: DataTypes.STRING(100),
+    name: {
+      type: DataTypes.STRING(255),
       allowNull: false
     },
-    display_name: {
-      type: DataTypes.STRING(100),
+    price: {
+      type: "DOUBLE",
       allowNull: false
     },
-    first_name: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    last_name: {
-      type: DataTypes.STRING(100),
+    description: {
+      type: DataTypes.TEXT,
       allowNull: false
     },
     created_at: {
@@ -43,6 +39,6 @@ module.exports = function(sequelize: sequelize.Sequelize, DataTypes: DataTypes) 
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
-    tableName: 'user'
+    tableName: 'product'
   });
 };

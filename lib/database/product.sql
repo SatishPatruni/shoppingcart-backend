@@ -1,0 +1,13 @@
+CREATE TABLE shoppingcart.product (
+	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	product_id varchar(100) NOT NULL,
+	name varchar(255) NOT NULL,
+	price DOUBLE NOT NULL,
+	description TEXT NOT NULL,
+	CONSTRAINT product_pk PRIMARY KEY (id)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8;
+
+ALTER TABLE shoppingcart.product ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL;
+ALTER TABLE shoppingcart.product ADD updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL;
