@@ -10,3 +10,5 @@ CREATE TABLE shoppingcart.`order` (
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;
+
+ALTER TABLE shoppingcart.`order` MODIFY COLUMN status enum('open','closed') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'open' NOT NULL;

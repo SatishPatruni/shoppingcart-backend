@@ -10,10 +10,18 @@ export class PaymentRouter {
 
     public initRoutes() {
         this.app
-            .route('/api/v1/payment/razorpay')
+            .route('/api/v1/orders/:orderId/payment/razorpay')
             .post(
                 (req: Request, res: Response) => {
                     this.paymentManager.placeRazorPayOrder(req, res);
+                }
+            );
+
+        this.app
+            .route('/api/v1/orders/:orderId/payment/razorpay/verify')
+            .post(
+                (req: Request, res: Response) => {
+                    this.paymentManager.verifyPayment(req, res);
                 }
             );
     }

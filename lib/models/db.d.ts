@@ -14,6 +14,18 @@ export interface orderAttribute {
 export interface orderInstance extends Sequelize.Instance<orderAttribute>, orderAttribute { }
 export interface orderModel extends Sequelize.Model<orderInstance, orderAttribute> { }
 
+// table: order_product
+export interface order_productAttribute {
+  id:number;
+  order_id:number;
+  product_id:number;
+  count:number;
+  created_at:Date;
+  updated_at:Date;
+}
+export interface order_productInstance extends Sequelize.Instance<order_productAttribute>, order_productAttribute { }
+export interface order_productModel extends Sequelize.Model<order_productInstance, order_productAttribute> { }
+
 // table: product
 export interface productAttribute {
   id:number;
