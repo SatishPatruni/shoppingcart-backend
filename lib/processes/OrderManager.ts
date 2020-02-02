@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
 import { ConnectionManager } from './ConnectionManager';
-import { Config } from '../config';
-import bcrypt = require('bcryptjs');
-import jwt = require('jsonwebtoken');
 
 export class OrderManager {
     connectionManager: ConnectionManager;
-    config = new Config();
     order: any;
     product: any;
     order_product: any;
@@ -19,9 +15,11 @@ export class OrderManager {
     }
 
     public createOrder(req: Request, res: Response) {
+        let user = req['user'];
+        console.log('user: ' + JSON.stringify(user));
         let response = { error_code: 0, order: { order_id: 0, order_products: [] } };
         let productId = req.body.productId;
-        let order = { user_id: 1 };
+        let order = { user_id: user.user_id };
         let orderProduct = { order_id: 0, product_id: productId, count: 1 };
         this.connectionManager.getConnection().transaction(t => {
             return this.order.create(order, { transaction: t }).then(order => {

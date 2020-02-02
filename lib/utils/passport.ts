@@ -1,5 +1,4 @@
 import { ConnectionManager } from '../processes/ConnectionManager';
-import { Config } from '../config';
 
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -7,11 +6,10 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 module.exports = function(passport) {
   const connectionManager = new ConnectionManager();
   let user = connectionManager.user;
-  const config = new Config();
   let opts: any = {};
 
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
-  opts.secretOrKey = config.secret;
+  opts.secretOrKey = process.env.JWT_SECRET;
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
       user

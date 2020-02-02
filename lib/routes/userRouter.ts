@@ -23,7 +23,7 @@ export class UserRouter {
 
     this.app
       .route('/api/v1/users/:id')
-      .get(
+      .get(passport.authenticate('jwt', { session: false }),
         (req: Request, res: Response) => {
           this.userManager.getUserDetails(req, res);
         }

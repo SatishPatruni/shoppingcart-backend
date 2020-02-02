@@ -11,7 +11,7 @@ export class OrderRouter {
     public initRoutes() {
         this.app
             .route('/api/v1/orders')
-            .post(
+            .post(passport.authenticate('jwt', { session: false }),
                 (req: Request, res: Response) => {
                     this.orderManager.createOrder(req, res);
                 }
@@ -19,7 +19,7 @@ export class OrderRouter {
 
         this.app
             .route('/api/v1/orders/:orderId')
-            .put(
+            .put(passport.authenticate('jwt', { session: false }),
                 (req: Request, res: Response) => {
                     this.orderManager.addProductToOrder(req, res);
                 }
@@ -27,7 +27,7 @@ export class OrderRouter {
 
         this.app
             .route('/api/v1/orders/:orderId')
-            .get(
+            .get(passport.authenticate('jwt', { session: false }),
                 (req: Request, res: Response) => {
                     this.orderManager.getOrderDetails(req, res);
                 }

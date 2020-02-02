@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
 import { ConnectionManager } from './ConnectionManager';
-import { Config } from '../config';
-import bcrypt = require('bcryptjs');
-import jwt = require('jsonwebtoken');
 
 export class ProductManager {
     connectionManger: ConnectionManager;
-    config = new Config();
     product: any;
 
     constructor() {

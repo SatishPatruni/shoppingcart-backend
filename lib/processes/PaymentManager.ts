@@ -1,22 +1,17 @@
 import { Request, Response } from 'express';
 import { ConnectionManager } from './ConnectionManager';
-import { Config } from '../config';
-import bcrypt = require('bcryptjs');
-import jwt = require('jsonwebtoken');
 import Razorpay = require('razorpay');
-import { OrderManager } from './OrderManager';
 import e = require('express');
 var CryptoJS = require("crypto-js");
 
 const razorPayInstance = new Razorpay({
-    key_id: 'rzp_test_ThMPARsTfVfL7N',
-    key_secret: 'Nv3j0OVfCLEVWtVJhR0EklsX',
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 export class PaymentManager {
     connectionManager: ConnectionManager;
     order: any;
-    config = new Config();
 
     constructor() {
         this.connectionManager = new ConnectionManager();
@@ -24,9 +19,10 @@ export class PaymentManager {
     }
 
     public placeRazorPayOrder(req: Request, res: Response) {
-        let response = { error_code: 0, order: {} };
-        let orderAmount = req.body.amount * 100;
+        let amount = req.body.amount;
         let orderId = req.params.orderId;
+        let response = { error_code: 0, order: {} };
+        let orderAmount =  (amount * 100).toFixed(0);
         var options = {
             amount: orderAmount,
             currency: "INR",
@@ -57,7 +53,7 @@ export class PaymentManager {
         let providerOrderId = req.body.providerInfo.razorpay_payment_id;
         let providerSignature = req.body.providerInfo.razorpay_signature;
         let orderId = req.body.orderId;
-        let cryptSignature = CryptoJS.HmacSHA256(providerOrderId + '|' + providerPaymentId, "Nv3j0OVfCLEVWtVJhR0EklsX");
+        let cryptSignature = CryptoJS.HmacSHA256(providerOrderId + '|' + providerPaymentId, process.env.RAZORPAY_KEY_SECRET);
         console.log('cryptSignature: ' + cryptSignature);
         if (cryptSignature === providerSignature) {
             console.log('Signature verified!')

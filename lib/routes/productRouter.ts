@@ -12,6 +12,7 @@ export class ProductRouter {
         this.app
             .route('/api/v1/products')
             .get(
+                passport.authenticate('jwt', { session: false }),
                 (req: Request, res: Response) => {
                     this.productManager.getProductList(req, res);
                 }

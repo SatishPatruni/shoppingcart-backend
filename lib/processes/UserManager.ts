@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { ConnectionManager } from './ConnectionManager';
-import { Config } from '../config';
 import bcrypt = require('bcryptjs');
 import jwt = require('jsonwebtoken');
 
 export class UserManager {
   connectionManger: ConnectionManager;
-  config = new Config();
   user: any;
 
   constructor() {
@@ -32,13 +30,14 @@ export class UserManager {
           console.log('passwordHash: ' + this.passwordHash(password));
           if (this.comparePassword(password, user.password)) {
             delete user.password;
-            const token = jwt.sign(user, this.config.secret, {
-              expiresIn: this.config.jwtExpiry
+            const token = jwt.sign(user, process.env.JWT_SECRET, {
+              expiresIn: process.env.JWT_EXPIRY
             });
 
             response.user = user;
-            res.cookie("auth-token", token, {httpOnly:true, secure:true});
-            res.json(response).status(200).send();
+            response.token = 'JWT ' + token;
+            res.cookie("auth-token", 'JWT ' + token, {httpOnly:true, secure:true});
+            res.status(200).send(response);
           } else {
             return res.status(401).send();
           }

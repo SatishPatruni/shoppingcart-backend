@@ -11,7 +11,7 @@ export class PaymentRouter {
     public initRoutes() {
         this.app
             .route('/api/v1/orders/:orderId/payment/razorpay')
-            .post(
+            .post(passport.authenticate('jwt', { session: false }),
                 (req: Request, res: Response) => {
                     this.paymentManager.placeRazorPayOrder(req, res);
                 }
@@ -19,7 +19,7 @@ export class PaymentRouter {
 
         this.app
             .route('/api/v1/orders/:orderId/payment/razorpay/verify')
-            .post(
+            .post(passport.authenticate('jwt', { session: false }),
                 (req: Request, res: Response) => {
                     this.paymentManager.verifyPayment(req, res);
                 }
