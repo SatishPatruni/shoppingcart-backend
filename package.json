@@ -35,7 +35,7 @@
         "passport": "^0.4.0",
         "passport-jwt": "^4.0.0",
         "razorpay": "^2.0.5",
-        "sequelize": "^4.38.0",
+        "sequelize": "^5.15.1",
         "ts-md5": "^1.2.4"
     },
     "devDependencies": {
